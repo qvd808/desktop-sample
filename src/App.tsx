@@ -1,39 +1,64 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
+import TodoListDisplay from "./component/TodoListDisplay";
+
+export interface TodoObject {
+  job: string
+  priority: number
+  isDone: boolean
+  remind: () => void;
+}
+
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
-  const [todoInput, setToDoInput] = useState("Enter something");
-  const [toDoList, setToDoList] = useState([]);
+  const [todoInput, setToDoInput] = useState("");
+  const [toDoList, setToDoList] = useState(Array<TodoObject>);
 
-  async function greet() {
+  async function send_notificaiton(title:String , body:String) {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-      invoke("send_notificaiton").then((res) => {
-        console.log(res)
-      })
+      await invoke("send_notificaiton", {title: title, body: body})
     }
 
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
+      <h1>Enter Todo Jobs!</h1>
 
       <input
         id="greet-input"
         onChange={(e) => setToDoInput(e.currentTarget.value)}
         value={todoInput}
-        placeholder="Enter something"
+        placeholder="Enter something ..."
       />
       <button
         type="button"
         onClick={() => {
-          const todoValue = todoInput;
+          // send_notificaiton();
+          const delay = 1000;
+          const newTodoObject:TodoObject ={
+            job: todoInput,
+            isDone: false,
+            priority: 0,
+            remind: () => {
+              let timerId = setTimeout(function tick() {
+                if (!newTodoObject.isDone){
+                  send_notificaiton("You have not finished your job!!", todoInput);
+                  timerId = setTimeout(tick, 1000);
+                } else {
+                  clearInterval(timerId);
+                }
+              }, 1000)
+            }
+          }
+          newTodoObject.remind();
+          setToDoList(toDoList => [...toDoList, newTodoObject]);
           setToDoInput("");
-          greet();
         }}
       >
-        Greet
+        Submit
       </button>
-      <p>{greetMsg}</p>
+        <TodoListDisplay list={toDoList}/>
+
     </div>
   );
 }
