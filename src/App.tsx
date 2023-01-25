@@ -21,8 +21,8 @@ function App() {
     }
 
   return (
-    <div className="container">
-      <h1>Enter Todo Jobs!</h1>
+    <div className="bg-red">
+      <h1 className="text-3xl font- ">Enter Todo Jobs!</h1>
 
       <input
         id="greet-input"
@@ -35,30 +35,32 @@ function App() {
         onClick={() => {
           // send_notificaiton();
           const delay = 1000;
-          const newTodoObject:TodoObject ={
+          const newTodoObject: TodoObject = {
             job: todoInput,
             isDone: false,
             priority: 0,
             remind: () => {
               let timerId = setTimeout(function tick() {
-                if (!newTodoObject.isDone){
-                  send_notificaiton("You have not finished your job!!", todoInput);
+                if (!newTodoObject.isDone) {
+                  send_notificaiton(
+                    "You have not finished your job!!",
+                    todoInput
+                  );
                   timerId = setTimeout(tick, 1000);
                 } else {
                   clearInterval(timerId);
                 }
-              }, 1000)
-            }
-          }
+              }, 1000);
+            },
+          };
           newTodoObject.remind();
-          setToDoList(toDoList => [...toDoList, newTodoObject]);
+          setToDoList((toDoList) => [...toDoList, newTodoObject]);
           setToDoInput("");
         }}
       >
         Submit
       </button>
-        <TodoListDisplay list={toDoList}/>
-
+      <TodoListDisplay list={toDoList} />
     </div>
   );
 }
