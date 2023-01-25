@@ -1,5 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,700;0,900;1,100;1,500;1,700;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    background-color: rgb(48, 51, 64);
+    align-self: center;
+}
+
+input {
+    /* padding: 0 5px; */
+}
+
+/* .relative flex flex-col self-start left-1/4 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    left: 25%;
+} */

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { TodoObject } from "../App"
 
 declare interface TodoListDisplayProps {
@@ -6,27 +6,30 @@ declare interface TodoListDisplayProps {
 }
 
 export default function TodoListDisplay(props: TodoListDisplayProps) {
-    const [checked, setChecked] = React.useState(false);
+
+    const [state, setState] = useState(0);
 
     return (
-      <div>
-        {props.list
-          ? props.list.map((todo) => (
-              <div>
-                <input
-                  className=""
-                  checked={checked}
-                  onChange={() => {
-                    setChecked(!checked);
-                    todo.isDone = !todo.isDone;
-                    todo.priority += 1;
-                    console.log(todo.isDone);
-                  }}
-                />
-                <p className="">{todo.job}</p>
-              </div>
-            ))
-          : null}
-      </div>
+        <div className="relative flex flex-col self-start left-1/4">
+            {props.list
+                ? props.list.map((todo) => (
+                    <label
+                        className="inline-flex space-x-3 my-3"
+                    >
+                        <input
+                            type="checkbox"
+                            className="form-checkbox w-6 h-6 rounded"
+                            checked={todo.isDone}
+                            onChange={() => {
+                                todo.isDone =!todo.isDone;
+                                setState(state + 1);
+                                console.log(todo.job)
+                            }}
+                        />
+                        <p className="text-yellow-500 hover:cursor-pointer">{todo.job}</p>
+                    </label>
+                ))
+                : null}
+        </div>
     );
 }
